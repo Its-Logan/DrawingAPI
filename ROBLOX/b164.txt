@@ -1,0 +1,43 @@
+local DrawingAPI = {}
+
+function DrawingAPI:CreateLine(Parent, StartPosition, EndPosition, Color, Thickness, Objects, SetMiddile)
+	if Parent and StartPosition and EndPosition then
+		local XStart = StartPosition.X
+		local YStart = StartPosition.Y
+		local XEnd = EndPosition.X
+		local YEnd = EndPosition.Y
+		local Line = Instance.new("Frame", Parent)
+		Line.AnchorPoint = Vector2.new(0.5,0.5)
+		if Thickness then Line.Size = UDim2.new(0, (StartPosition - EndPosition).Magnitude, 0, Thickness) else UDim2.new(0, Vector2.new(XStart - XEnd).Magnitude, 0, 1) end
+		if Color then Line.BackgroundColor3 = Color else Line.BackgroundColor3 = Color3.new(0,0,0) end
+		Line.BorderSizePixel = 0
+		local StartPositionLerp = StartPosition:Lerp(EndPosition, 0.5)
+		Line.Position = UDim2.new(0, ((XStart + XEnd)) / 2, 0, StartPositionLerp.Y)
+		Line.Rotation = math.atan2((YEnd - YStart), (XEnd - XStart)) * (180 / math.pi)
+		if SetMiddile and Objects then Line.Position = UDim2.new(Line.Position.X.Scale, Line.Position.X.Offset + (Objects[1].AbsoluteSize.X / 2), Line.Position.Y.Scale, Line.Position.Y.Offset + (Objects[1].AbsoluteSize.Y / 2)) end
+		return Line
+	end	
+	return nil
+end
+
+function DrawingAPI:UpdateLine(LineObject, StartPosition, EndPosition, Color, Thickness, Objects, SetMiddile)
+	if LineObject and StartPosition and EndPosition then
+		local XStart = StartPosition.X
+		local YStart = StartPosition.Y
+		local XEnd = EndPosition.X
+		local YEnd = EndPosition.Y
+		local Line = LineObject
+		Line.AnchorPoint = Vector2.new(0.5,0.5)
+		if Thickness then Line.Size = UDim2.new(0, (StartPosition - EndPosition).Magnitude, 0, Thickness) else UDim2.new(0, Vector2.new(XStart - XEnd).Magnitude, 0, 1) end
+		if Color then Line.BackgroundColor3 = Color else Line.BackgroundColor3 = Color3.new(0,0,0) end
+		Line.BorderSizePixel = 0
+		local StartPositionLerp = StartPosition:Lerp(EndPosition, 0.5)
+		Line.Position = UDim2.new(0, ((XStart + XEnd)) / 2, 0, StartPositionLerp.Y)
+		Line.Rotation = math.atan2((YEnd - YStart), (XEnd - XStart)) * (180 / math.pi)
+		if SetMiddile and Objects then Line.Position = UDim2.new(Line.Position.X.Scale, Line.Position.X.Offset + (Objects[1].AbsoluteSize.X / 2), Line.Position.Y.Scale, Line.Position.Y.Offset + (Objects[1].AbsoluteSize.Y / 2)) end
+		return Line
+	end
+	return nil
+end
+
+return DrawingAPI
