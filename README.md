@@ -10,11 +10,17 @@ ROBLOX Library Link: (Wait to finished)
 
 > :CreateLine(Parent, StartPosition, EndPosition, Color, Thickness, Objects, SetMiddile) -- Creates a line
   Parent(Instance)* -- The parent of the new line
+  
   StartPosition(Vector2)* -- The starting position of the line
+  
   EndPosition(Vector2)* -- The ending position of the line
+  
   Color(Color3) -- The color of the line (Default: 0,0,0)
+  
   Thickness(int) -- How thick the line is (Default: 1)
+  
   Objects(table) -- The object(s) used from the positions. The first object(instance) is the StartPosition object(instance) and the second object(instance) is the EndPosition object(instance) e.x. {script.Parent.ScreenGui.Frame, script.Parent.ScreenGui.Frame2}
+  
   SetMiddle(bool) -- Sets the line in the middle of the starting position to the ending position. REQUIRES THE OBJECTS ARGUMENT!
   
 ## Setting Up
