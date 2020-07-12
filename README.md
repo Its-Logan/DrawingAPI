@@ -6,7 +6,7 @@ A multi language Drawing API! It is powerful and simple to use.
 # ROBLOX Documentation (Unfinished)
 ROBLOX Library Link: (Wait to finished)
 
- * = Required
+```* = Required```
 
 > :CreateLine(Parent, StartPosition, EndPosition, Color, Thickness, Objects, SetMiddile) -- Creates a line
 >  Parent(Instance) * -- The parent of the new line
