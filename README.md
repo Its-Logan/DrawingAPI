@@ -1,4 +1,4 @@
-# RobloxDrawingAPI
+# DrawingAPI
 A multi language Drawing API! It is powerful and simple to use.
 
 # THIS IS A WORK IN PROGRESS! NOT MANY LANGUAGES ARE SUPPORTED *YET*
