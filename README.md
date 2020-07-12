@@ -36,5 +36,4 @@ Second: Create a *Local script* and require the API (Module script from the firs
 
 :WaitForChild() Is not necessary 
 
-Thats all for setting up!
 
