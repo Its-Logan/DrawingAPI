@@ -9,11 +9,11 @@ ROBLOX Library Link: (Wait to finished)
 * = Required
 
 > :CreateLine(Parent, StartPosition, EndPosition, Color, Thickness, Objects, SetMiddile) -- Creates a line
->  Parent(Instance)* -- The parent of the new line
+>  Parent(Instance) * -- The parent of the new line
 >  
->  StartPosition(Vector2)* -- The starting position of the line
+>  StartPosition(Vector2) * -- The starting position of the line
 >  
->  EndPosition(Vector2)* -- The ending position of the line
+>  EndPosition(Vector2) * -- The ending position of the line
 >  
 >  Color(Color3) -- The color of the line (Default: 0,0,0)
 >  
