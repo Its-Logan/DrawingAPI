@@ -1,0 +1,140 @@
+local DrawingAPI = {}
+
+local Runservice = game:GetService("RunService")
+local Holder = Instance.new("ScreenGui", game.Players.LocalPlayer.PlayerGui)
+local GUIObjects = {}
+
+--//Draws
+
+function DrawingAPI:DrawLine(StartPosition, EndPosition, Color, Thickness, Objects, SetMiddile, IsScale)
+	if Holder and StartPosition and EndPosition then
+		local XStart = StartPosition.X
+		local YStart = StartPosition.Y
+		local XEnd = EndPosition.X
+		local YEnd = EndPosition.Y
+		local Line = Instance.new("Frame", Holder)
+		Line.AnchorPoint = Vector2.new(0.5,0.5)
+		if Thickness then if IsScale then Line.Size = UDim2.new((StartPosition - EndPosition).Magnitude / workspace.CurrentCamera.ViewportSize.X, 0, Thickness / workspace.CurrentCamera.ViewportSize.Y, 0) else Line.Size = UDim2.new(0, (StartPosition - EndPosition).Magnitude, 0, Thickness) end else if IsScale then Line.Size = UDim2.new(Vector2.new(XStart - XEnd).Magnitude / workspace.CurrentCamera.ViewportSize.X, 0, 1 / workspace.CurrentCamera.ViewportSize.Y, 0) else Line.Size = UDim2.new(0, Vector2.new(XStart - XEnd).Magnitude, 0, 1) end end
+		if Color then Line.BackgroundColor3 = Color else Line.BackgroundColor3 = Color3.new(255,255,255) end
+		Line.BorderSizePixel = 0
+		local StartPositionLerp = StartPosition:Lerp(EndPosition, 0.5)
+		if IsScale then Line.Position = UDim2.new((((XStart + XEnd)) / 2) / workspace.CurrentCamera.ViewportSize.X, 0, StartPositionLerp.Y / workspace.CurrentCamera.ViewportSize.Y, 0) else Line.Position = UDim2.new(0, ((XStart + XEnd)) / 2, 0, StartPositionLerp.Y) end
+		Line.Rotation = math.atan2((YEnd - YStart), (XEnd - XStart)) * (180 / math.pi)
+		if SetMiddile and Objects then Line.Position = UDim2.new(Line.Position.X.Scale, Line.Position.X.Offset + (Objects[1].AbsoluteSize.X / 2), Line.Position.Y.Scale, Line.Position.Y.Offset + (Objects[1].AbsoluteSize.Y / 2)) end
+		table.insert(GUIObjects, Line)
+		return Line
+	end	
+	return nil
+end
+
+function DrawingAPI:DrawRect(X, Y, Width, Height, LineThickness, Color, IsScale)
+	if X and Y and Width and Height then
+		local function ColorCheck() if Color then return Color end return Color3.new(255,255,255) end
+		local L1 = DrawingAPI:DrawLine(Vector2.new(X,Y), Vector2.new(X+Width, Y), ColorCheck(), LineThickness, nil, nil, IsScale)
+		local L2 = DrawingAPI:DrawLine(Vector2.new(X,Y), Vector2.new(X, Y+Height), ColorCheck(), LineThickness, nil, nil, IsScale)
+		local L3 = DrawingAPI:DrawLine(Vector2.new(X,Y+Height), Vector2.new(X+Width, Y+Height), ColorCheck(), LineThickness, nil, nil, IsScale)
+		local L4 = DrawingAPI:DrawLine(Vector2.new(X+Width,Y+Height), Vector2.new(X+Width, Y), ColorCheck(), LineThickness, nil, nil, IsScale)
+		return {L1, L2, L3, L4}
+	end
+	return nil
+end
+
+function DrawingAPI:DrawFilledRect(X, Y, Width, Height, Color, IsScale)
+	if X and Y and Width and Height then
+		local Object = Instance.new("Frame", Holder)
+		Object.Size = UDim2.new(0,Width,0,Height)
+		Object.Position = UDim2.new(0,X,0,Y)
+		Object.BorderSizePixel = 0
+		if Color then Object.BackgroundColor3 = Color end
+		table.insert(GUIObjects, Object)
+		return Object
+	end
+	return nil
+end
+
+function DrawingAPI:DrawText(X, Y, Width, Height, IsScale, Text, BackgroundColor, BackgroundTransparency, TextColor, TextTransparency)
+	if X and Y and Width and Height then
+		local Object = Instance.new("TextLabel", Holder)
+		if IsScale then Object.Size = UDim2.new(Width / workspace.CurrentCamera.ViewportSize.X, 0, Height / workspace.CurrentCamera.ViewportSize.Y, 0) else Object.Size = UDim2.new(0, Width, 0, Height) end
+		if IsScale then Object.Position = UDim2.new(X / workspace.CurrentCamera.ViewportSize.X, 0, Y / workspace.CurrentCamera.ViewportSize.Y, 0) else Object.Position = UDim2.new(0, X, 0, Y) end
+		Object.BorderSizePixel = 0
+		Object.TextScaled = true
+		if Text then Object.Text = Text end
+		if BackgroundColor then Object.BackgroundColor3 = BackgroundColor end
+		if BackgroundTransparency then Object.BackgroundTransparency = BackgroundTransparency end
+		if TextColor then Object.TextColor3 = TextColor end
+		if TextTransparency then Object.TextTransparency = TextTransparency end
+		table.insert(GUIObjects, Object)
+		return Object
+	end
+	return nil
+end
+
+--//Updates
+
+function DrawingAPI:UpdateLine(Line, StartPosition, EndPosition, Color, Thickness, Objects, SetMiddile, IsScale)
+	if Line and StartPosition and EndPosition then
+		local XStart = StartPosition.X
+		local YStart = StartPosition.Y
+		local XEnd = EndPosition.X
+		local YEnd = EndPosition.Y
+		Line.AnchorPoint = Vector2.new(0.5,0.5)
+		if Thickness then if IsScale then Line.Size = UDim2.new((StartPosition - EndPosition).Magnitude / workspace.CurrentCamera.ViewportSize.X, 0, Thickness / workspace.CurrentCamera.ViewportSize.Y, 0) else Line.Size = UDim2.new(0, (StartPosition - EndPosition).Magnitude, 0, Thickness) end else if IsScale then Line.Size = UDim2.new(Vector2.new(XStart - XEnd).Magnitude / workspace.CurrentCamera.ViewportSize.X, 0, 1 / workspace.CurrentCamera.ViewportSize.Y, 0) else Line.Size = UDim2.new(0, Vector2.new(XStart - XEnd).Magnitude, 0, 1) end end
+		if Color then Line.BackgroundColor3 = Color else Line.BackgroundColor3 = Color3.new(0,0,0) end
+		Line.BorderSizePixel = 0
+		local StartPositionLerp = StartPosition:Lerp(EndPosition, 0.5)
+		Line.Position = UDim2.new(0, ((XStart + XEnd)) / 2, 0, StartPositionLerp.Y)
+		Line.Rotation = math.atan2((YEnd - YStart), (XEnd - XStart)) * (180 / math.pi)
+		if SetMiddile and Objects then Line.Position = UDim2.new(Line.Position.X.Scale, Line.Position.X.Offset + (Objects[1].AbsoluteSize.X / 2), Line.Position.Y.Scale, Line.Position.Y.Offset + (Objects[1].AbsoluteSize.Y / 2)) end
+		return Line
+	end
+	return nil
+end
+
+function DrawingAPI:UpdateRect(Object, X, Y, Width, Height, LineThickness, Color, IsScale)
+	if Object and X and Y and Width and Height then
+		local function ColorCheck() if Color then return Color end return Color3.new(255,255,255) end
+		local L1 = DrawingAPI:DrawLine(Vector2.new(X,Y), Vector2.new(X+Width, Y), ColorCheck(), LineThickness, nil, nil, IsScale)
+		local L2 = DrawingAPI:DrawLine(Vector2.new(X,Y), Vector2.new(X, Y+Height), ColorCheck(), LineThickness, nil, nil, IsScale)
+		local L3 = DrawingAPI:DrawLine(Vector2.new(X,Y+Height), Vector2.new(X+Width, Y+Height), ColorCheck(), LineThickness, nil, nil, IsScale)
+		local L4 = DrawingAPI:DrawLine(Vector2.new(X+Width,Y+Height), Vector2.new(X+Width, Y), ColorCheck(), LineThickness, nil, nil, IsScale)
+		Object[1]:Destroy() Object[2]:Destroy() Object[3]:Destroy() Object[4]:Destroy()
+		Object[1] = L1 Object[2] = L2 Object[3] = L3 Object[4] = L4
+		return {L1, L2, L3, L4}
+	end
+	return nil
+end
+
+function DrawingAPI:UpdateFilledRect(Object, X, Y, Width, Height, Color)
+	if Object and X and Y and Width and Height then
+		Object.Size = UDim2.new(0,Width,0,Height)
+		Object.Position = UDim2.new(0,X,0,Y)
+		if Color then Object.BackgroundColor3 = Color end
+		return Object
+	end
+	return nil
+end
+
+function DrawingAPI:UpdateText(Object, X, Y, Width, Height, IsScale, Text, BackgroundColor, BackgroundTransparency, TextColor, TextTransparency)
+	if X and Y and Width and Height then
+		if IsScale then Object.Size = UDim2.new(Width / workspace.CurrentCamera.ViewportSize.X, 0, Height / workspace.CurrentCamera.ViewportSize.Y, 0) else Object.Size = UDim2.new(0, Width, 0, Height) end
+		if IsScale then Object.Position = UDim2.new(X / workspace.CurrentCamera.ViewportSize.X, 0, Y / workspace.CurrentCamera.ViewportSize.Y, 0) else Object.Position = UDim2.new(0, X, 0, Y) end
+		Object.BorderSizePixel = 0
+		Object.TextScaled = true
+		if Text then Object.Text = Text end
+		if BackgroundColor then Object.BackgroundColor3 = BackgroundColor end
+		if BackgroundTransparency then Object.BackgroundTransparency = BackgroundTransparency end
+		if TextColor then Object.TextColor3 = TextColor end
+		if TextTransparency then Object.TextTransparency = TextTransparency end
+		return Object
+	end
+	return nil
+end
+
+function Refresh()
+	
+end
+
+Runservice.RenderStepped:Connect(Refresh)
+
+return DrawingAPI
